@@ -99,4 +99,8 @@ You had 3 topping(s) for $0.8999999999999999
 Your total price is $12.9
 Would you like to place an order? exit to exit """
 
-
+class Pizza:
+    def __init__(pizza, size, sauce, toppings):
+        pizza.size = 
+        pizza.sauce = 
+        pizza.toppings = 
