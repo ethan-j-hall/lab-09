@@ -100,7 +100,104 @@ Your total price is $12.9
 Would you like to place an order? exit to exit """
 
 class Pizza:
-    def __init__(pizza, size, sauce, toppings):
-        pizza.size = 
-        pizza.sauce = 
-        pizza.toppings = 
+    def __init__(self, size, sauce="red"):
+        if size > 10:
+            self.size = size
+        else:
+            self.size = 10 
+
+        self.sauce = sauce 
+        self.toppings = ["cheese"]  
+    
+    def setSize(self, size):
+
+        if size > 10:
+            self.size = size
+        else:
+            self.size = 10  
+
+    def getSize(self):
+        return self.size
+    
+    def setToppings(self, *toppings):
+
+        for topping in toppings:
+            self.toppings.append(topping)
+
+    def getToppings(self):
+        return self.toppings
+    
+    def getAmountOfToppings(self):
+        return len(self.toppings)
+    
+    def getSauce(self):
+        return self.sauce
+
+
+class Pizzeria:
+    price_per_topping = 0.30  
+    price_per_inch = 0.60 
+
+    def __init__(self):
+        self.orders = 0
+        self.pizzas = []
+    
+    def placeOrder(self):
+        size = int(input("Please enter the size of pizza, as a whole number. The smallest size is 10: "))
+        
+        sauce = input("What kind of sauce would you like? Leave blank for red sauce: ")
+        if sauce == "":
+            sauce = "red"
+        
+        toppings = []
+        print("Please enter the toppings you would like, leave blank when done.")
+        while True:
+            topping = input()
+            if topping == "":
+                break
+            toppings.append(topping)
+        
+        pizza = Pizza(size, sauce)
+        pizza.setToppings(*toppings)
+        
+        self.pizzas.append(pizza)
+        self.orders += 1
+        
+        self.getReceipt(pizza)
+    
+    def getPrice(self, pizza):
+        size_price = pizza.getSize() * Pizzeria.price_per_inch
+        toppings_price = pizza.getAmountOfToppings() * Pizzeria.price_per_topping
+        return size_price + toppings_price
+    
+    def getReceipt(self, pizza):
+        size_price = pizza.getSize() * Pizzeria.price_per_inch
+        toppings_price = pizza.getAmountOfToppings() * Pizzeria.price_per_topping
+        total_price = size_price + toppings_price
+        
+        print(f'\nYou ordered a {pizza.getSize()}" pizza with {pizza.getSauce()} sauce and the following toppings:')
+        print(", ".join(pizza.getToppings()))
+        print(f"You ordered a {pizza.getSize()} pizza for ${size_price:.2f}")
+        print(f"You had {pizza.getAmountOfToppings()} topping(s) for ${toppings_price:.2f}")
+        print(f"Your total price is ${total_price:.2f}")
+    
+    def getNumberOfOrders(self):
+        return self.orders
+
+
+def main():
+    pizzeria = Pizzeria()
+    
+    while True:
+        order_input = input("\nWould you like to place an order? exit to exit: ").lower()
+        if order_input == "exit":
+            break
+        elif order_input == "yes":
+            pizzeria.placeOrder()
+        else:
+            print("Invalid input. Please type 'yes' to order or 'exit' to quit.")
+    
+    print(f"\nTotal number of orders placed: {pizzeria.getNumberOfOrders()}")
+
+if __name__ == "__main__":
+    main()
